@@ -10,7 +10,10 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [
-  { name = "shaoxinjiang" }
+  { name = "Xinjiang Shao" }
+]
+maintainers = [
+  { name = "Xinjiang Shao" }
 ]
 keywords = ["open-source", "cli", "github", "repository", "audit"]
 classifiers = [
@@ -18,16 +21,28 @@ classifiers = [
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3 :: Only",
-  "Topic :: Software Development :: Quality Assurance"
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 
 [project.scripts]
 maintaincheck = "maintaincheck.cli:main"
 
+[project.optional-dependencies]
+dev = ["build>=1.2.0", "pytest>=8.0"]
+
+[project.urls]
+Homepage = "https://github.com/dongxiang777/maintaincheck"
+Repository = "https://github.com/dongxiang777/maintaincheck"
+Issues = "https://github.com/dongxiang777/maintaincheck/issues"
+Changelog = "https://github.com/dongxiang777/maintaincheck/blob/main/CHANGELOG.md"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/maintaincheck"]
 
 [tool.pytest.ini_options]
+addopts = "-q"
 testpaths = ["tests"]
-
