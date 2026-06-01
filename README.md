@@ -1,29 +1,49 @@
 # maintaincheck
 
-`maintaincheck` is a tiny command-line tool that audits the basics of an open source repository.
+[![CI](https://github.com/dongxiang777/maintaincheck/actions/workflows/ci.yml/badge.svg)](https://github.com/dongxiang777/maintaincheck/actions/workflows/ci.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 
-It checks whether a repo includes the files and workflows that make collaboration easier:
+`maintaincheck` is a small command-line tool that scores the baseline hygiene of an open source repository.
 
-- `README.md`
-- `LICENSE`
-- tests
-- CI workflows
-- `CONTRIBUTING.md`
-- `CODE_OF_CONDUCT.md`
-- `SECURITY.md`
-- `CHANGELOG.md`
-- issue templates
+It is built for solo maintainers and early-stage open source projects that want a fast answer to a simple question:
 
-The goal is simple: give maintainers a quick signal before they publish or share a repository.
+> Is this repo ready for other people to use, review, or contribute to?
+
+## What it checks
+
+`maintaincheck` looks for the files and conventions that make repositories easier to understand, safer to use, and easier to contribute to.
+
+| Check | Weight | Why it matters |
+| --- | ---: | --- |
+| `README.md` | 15 | Explains what the project does and how to use it |
+| `LICENSE` | 15 | Clarifies reuse and distribution rights |
+| Tests | 15 | Gives basic confidence that behavior can be verified |
+| CI workflows | 10 | Keeps validation automatic on push and PR |
+| `CONTRIBUTING.md` | 10 | Tells contributors how to participate |
+| `CODE_OF_CONDUCT.md` | 10 | Sets collaboration expectations |
+| `SECURITY.md` | 10 | Provides a path for responsible disclosure |
+| `CHANGELOG.md` | 10 | Tracks releases and project changes |
+| Issue templates | 5 | Helps structure bug reports and feedback |
 
 ## Why this exists
 
-Small and solo-maintained projects often skip repository hygiene because setting up process files feels slower than shipping code. This tool helps maintainers catch the most common gaps in a few seconds.
+Many small open source repos are useful long before they are polished. The problem is that missing maintenance files can make a project look abandoned, risky, or hard to contribute to even when the code itself is solid.
+
+`maintaincheck` gives maintainers a quick signal before publishing a repo, opening it to contributors, or wiring it into CI.
 
 ## Install
 
+Install from the local checkout:
+
 ```bash
 pip install .
+```
+
+Install directly from GitHub:
+
+```bash
+pip install git+https://github.com/dongxiang777/maintaincheck.git
 ```
 
 ## Usage
@@ -40,7 +60,7 @@ Audit another path:
 maintaincheck /path/to/repo
 ```
 
-Emit JSON:
+Emit machine-readable JSON:
 
 ```bash
 maintaincheck --json
@@ -69,18 +89,44 @@ Score: 85/100
 [PASS] Issue templates
 ```
 
-## Roadmap
+## JSON output
 
-- Add custom rule configuration
-- Add badge generation
-- Add GitHub Action wrapper
+```json
+{
+  "root": "/work/my-repo",
+  "score": 85,
+  "checks": [
+    {
+      "key": "readme",
+      "label": "README.md",
+      "passed": true,
+      "weight": 15,
+      "detail": "Project overview and usage instructions"
+    }
+  ]
+}
+```
+
+## Use cases
+
+- Run it locally before making a repository public
+- Gate pull requests with a minimum repository score
+- Use it as a lightweight checklist for new OSS projects
+- Audit template repos before reusing them across teams
 
 ## Development
 
 ```bash
 uv run pytest
 uv run python -m maintaincheck
+uv run python -m maintaincheck --min-score 100
 ```
+
+## Roadmap
+
+- Add configurable checks and custom weights
+- Export markdown or badge-friendly summaries
+- Package a reusable GitHub Action wrapper
 
 ## License
 
