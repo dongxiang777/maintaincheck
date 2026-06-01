@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -13,7 +14,10 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install hatchling pytest .
+        run: pip install build hatchling pytest .
       - name: Run tests
         run: pytest
-
+      - name: Run self audit
+        run: python -m maintaincheck --min-score 100
+      - name: Build package
+        run: python -m build
